@@ -1,0 +1,47 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Evidence_Filmů.Views.Uvod"
+        Title="Detail" Width="420" Height="400"
+        CanResize="False" WindowStartupLocation="CenterOwner">
+
+  <Grid RowDefinitions="*,Auto" Margin="24">
+    <StackPanel Grid.Row="0" Spacing="10">
+
+      <StackPanel Orientation="Horizontal" Spacing="10">
+        <Border x:Name="TypBadge" Background="#5865F2" CornerRadius="5" Padding="8,3">
+          <TextBlock x:Name="TypLabel" Foreground="White" FontWeight="Bold"/>
+        </Border>
+        <TextBlock x:Name="NazevLabel" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
+      </StackPanel>
+
+      <Separator/>
+
+      <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Žánr:" Foreground="#B5BAC1"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="ZanrLabel"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Délka:" Foreground="#B5BAC1"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="DelkaLabel"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Hodnocení:" Foreground="#B5BAC1"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="HodnoceniLabel" FontWeight="Bold" Foreground="#23A55A"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Stav:" Foreground="#B5BAC1"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="StavLabel"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Přidáno:" Foreground="#B5BAC1"/>
+        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="DatumLabel"/>
+      </Grid>
+
+      <Separator/>
+
+      <TextBlock Text="Popis:" Foreground="#B5BAC1"/>
+      <TextBlock x:Name="PopisLabel" TextWrapping="Wrap"/>
+
+    </StackPanel>
+
+    <Button Grid.Row="1" Content="Zavřít" HorizontalAlignment="Right"
+            Click="OnZavritClick" Padding="16,7" Margin="0,12,0,0"
+            Background="#5865F2" Foreground="White"/>
+  </Grid>
+</Window>

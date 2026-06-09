@@ -1,0 +1,13 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Evidence_Filmů.Views.Zprava"
+        Width="340" Height="160" CanResize="False"
+        WindowStartupLocation="CenterOwner">
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="20">
+        <TextBlock Grid.Row="0" x:Name="NadpisLabel" FontWeight="Bold" FontSize="15" Margin="0,0,0,8"/>
+        <TextBlock Grid.Row="1" x:Name="TextLabel" TextWrapping="Wrap"/>
+        <Button Grid.Row="2" Content="OK" HorizontalAlignment="Right" Click="OnOkClick"
+                Background="#5865F2" Foreground="White" Padding="16,7" Margin="0,12,0,0"/>
+    </Grid>
+</Window>

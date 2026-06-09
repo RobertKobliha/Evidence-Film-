@@ -1,0 +1,55 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Evidence_Filmů.Views.Uprava"
+        Title="Přidat / Upravit" Width="460" Height="530"
+        CanResize="False" WindowStartupLocation="CenterOwner">
+
+  <Grid RowDefinitions="*,Auto" Margin="20">
+    <StackPanel Grid.Row="0" Spacing="12">
+
+      <TextBlock x:Name="NadpisLabel" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+
+      <StackPanel Spacing="4">
+        <TextBlock Text="Typ"/>
+        <ComboBox x:Name="TypBox" HorizontalAlignment="Stretch"/>
+      </StackPanel>
+
+      <StackPanel Spacing="4">
+        <TextBlock Text="Název *"/>
+        <TextBox x:Name="NazevBox" Watermark="Zadejte název…"/>
+      </StackPanel>
+
+      <StackPanel Spacing="4">
+        <TextBlock Text="Žánr *"/>
+        <AutoCompleteBox x:Name="ZanrBox" Watermark="Vyberte nebo napište žánr…"
+                         MinimumPrefixLength="0" FilterMode="Contains"/>
+      </StackPanel>
+
+      <StackPanel Spacing="4">
+        <TextBlock x:Name="DelkaLabel" Text="Délka"/>
+        <TextBox x:Name="DelkaBox" Watermark="Číslo…"/>
+      </StackPanel>
+
+      <StackPanel Spacing="4">
+        <TextBlock Text="Hodnocení (0–10)"/>
+        <TextBox x:Name="HodnoceniBox" Watermark="Např. 8.5"/>
+      </StackPanel>
+
+      <StackPanel Spacing="4">
+        <TextBlock Text="Popis"/>
+        <TextBox x:Name="PopisBox" Watermark="Krátký popis…"
+                 AcceptsReturn="True" Height="70" TextWrapping="Wrap"/>
+      </StackPanel>
+
+      <CheckBox x:Name="DokončenoBox" Content="Dokončeno"/>
+
+      <TextBlock x:Name="ChybaLabel" Foreground="#ED4245" FontSize="12"/>
+
+    </StackPanel>
+
+    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,12,0,0">
+      <Button Content="Zrušit" Click="OnZrusitClick" Padding="14,7"/>
+      <Button Content="Uložit" Click="OnUlozitClick" Padding="14,7" Background="#5865F2" Foreground="White"/>
+    </StackPanel>
+  </Grid>
+</Window>

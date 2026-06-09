@@ -1,0 +1,20 @@
+# .NET build výstupy
+bin/
+obj/
+
+# Rider/JetBrains IDE soubory
+.idea/
+
+# Visual Studio
+.vs/
+*.user
+
+# Uživatelská data AppData (každý má svá vlastní)
+# (tato složka je mimo projekt, takže se sem nedostanou)
+
+# Systémové soubory
+.DS_Store
+Thumbs.db
+
+# Exporty a importy (patří uživatelům, ne do repozitáře)
+exportToHTML/
