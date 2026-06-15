@@ -114,17 +114,106 @@ public class Data
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }
 
-    // Importuje záznamy z TXT souboru (podporuje formát exportu i formát datového souboru)
+    // Importuje záznamy z TXT souboru.
+    // Podporuje dva formáty:
+    //   1. Interní formát (pipe-oddělený) — stejný jako media.txt
+    //   2. Čitelný formát vytvořený funkcí Export TXT
     public List<Item> ImportFromTxt(string path)
     {
         var items = new List<Item>();
         if (!File.Exists(path)) return items;
 
-        foreach (var line in File.ReadAllLines(path, Encoding.UTF8))
+        var lines = File.ReadAllLines(path, Encoding.UTF8);
+
+        // Rozpoznáme formát: interní formát má řádky s alespoň 8 svislítky
+        bool isInternalFormat = lines.Any(l => l.Count(c => c == '|') >= 8);
+
+        if (isInternalFormat)
         {
-            var item = ParseItem(line);
-            if (item != null) items.Add(item);
+            // Interní formát: každý řádek = jeden záznam
+            foreach (var line in lines)
+            {
+                var item = ParseItem(line);
+                if (item != null) items.Add(item);
+            }
         }
+        else
+        {
+            // Čitelný exportní formát: záznamy jsou bloky oddělené prázdnými řádky
+            items.AddRange(ParseExportFormat(lines));
+        }
+
+        return items;
+    }
+
+    // Parsuje čitelný exportní formát (výstup funkce ExportToTxt).
+    // Každý blok začíná řádkem "--- TYP ---" a obsahuje pojmenovaná pole.
+    private List<Item> ParseExportFormat(string[] lines)
+    {
+        var items = new List<Item>();
+        Item? current = null;
+
+        foreach (var line in lines)
+        {
+            var t = line.Trim();
+
+            // Začátek nového záznamu: "--- FILM ---" nebo "--- BOOK ---"
+            if (t.StartsWith("---") && t.EndsWith("---"))
+            {
+                if (current != null) items.Add(current);
+                current = new Item();
+                var typeStr = t.Replace("-", "").Trim();
+                current.Type = typeStr.Equals("BOOK", StringComparison.OrdinalIgnoreCase)
+                    ? ItemType.Book : ItemType.Film;
+                continue;
+            }
+
+            if (current == null) continue;
+
+            // Pojmenovaná pole — oddělíme první dvojtečkou a odebereme přebytečné mezery
+            var colonIdx = t.IndexOf(':');
+            if (colonIdx < 0) continue;
+            var key   = t[..colonIdx].Trim();
+            var value = t[(colonIdx + 1)..].Trim();
+
+            switch (key)
+            {
+                case "Název":
+                    current.Title = value;
+                    break;
+                case "Žánr":
+                    current.Genre = value;
+                    break;
+                case "Délka":
+                    // Formát: "120 minut" nebo "300 stran" — vezmeme jen číslo
+                    var numPart = value.Split(' ')[0];
+                    if (int.TryParse(numPart, out var delka)) current.Length = delka;
+                    break;
+                case "Hodnocení":
+                    // Formát: "8.5/10"
+                    var hodStr = value.Replace("/10", "");
+                    if (double.TryParse(hodStr, System.Globalization.NumberStyles.Any,
+                            System.Globalization.CultureInfo.InvariantCulture, out var hod))
+                        current.Rating = hod;
+                    break;
+                case "Stav":
+                    current.IsCompleted = value != "Nedokončeno";
+                    break;
+                case "Popis":
+                    current.Description = value;
+                    break;
+                case "Přidáno":
+                    if (DateTime.TryParseExact(value, "dd.MM.yyyy",
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            System.Globalization.DateTimeStyles.None, out var dt))
+                        current.AddedDate = dt;
+                    break;
+            }
+        }
+
+        // Uložíme poslední záznam (za ním nemusí být prázdný řádek)
+        if (current != null) items.Add(current);
+
         return items;
     }
 
