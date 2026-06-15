@@ -175,7 +175,7 @@
 
                     <!-- Zobrazit detail vybrané položky -->
                     <Button x:Name="DetailBtn"
-                            Content="Detail"
+                            Content="Podrobnosti"
                             Click="OnDetailClick"
                             Padding="10,5"/>
 
