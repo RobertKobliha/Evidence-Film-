@@ -81,23 +81,31 @@ public partial class Uprava : Window
             return;
         }
 
-        // Délka musí být kladné celé číslo
-        if (!int.TryParse(DelkaBox.Text, out var delka) || delka < 0)
+        // Délka: nepovinná, výchozí hodnota je 0; pokud uživatel něco napsal, musí to být kladné celé číslo
+        int delka = 0;
+        if (!string.IsNullOrWhiteSpace(DelkaBox.Text))
         {
-            ChybaLabel.Text = "Délka musí být kladné celé číslo.";
-            return;
+            if (!int.TryParse(DelkaBox.Text, out delka) || delka < 0)
+            {
+                ChybaLabel.Text = "Délka musí být kladné celé číslo.";
+                return;
+            }
         }
 
-        // Hodnocení musí být číslo v rozsahu 0–10
+        // Hodnocení: nepovinné, výchozí hodnota je 0; pokud uživatel něco napsal, musí být v rozsahu 0–10
         // Přijímáme jak desetinnou tečku, tak desetinnou čárku
-        if (!double.TryParse(HodnoceniBox.Text?.Replace(',', '.'),
-                              NumberStyles.Any,
-                              CultureInfo.InvariantCulture,
-                              out var hodnoceni)
-            || hodnoceni < 0 || hodnoceni > 10)
+        double hodnoceni = 0;
+        if (!string.IsNullOrWhiteSpace(HodnoceniBox.Text))
         {
-            ChybaLabel.Text = "Hodnocení musí být číslo od 0 do 10 (např. 7.5).";
-            return;
+            if (!double.TryParse(HodnoceniBox.Text.Replace(',', '.'),
+                                  NumberStyles.Any,
+                                  CultureInfo.InvariantCulture,
+                                  out hodnoceni)
+                || hodnoceni < 0 || hodnoceni > 10)
+            {
+                ChybaLabel.Text = "Hodnocení musí být číslo od 0 do 10 (např. 7.5).";
+                return;
+            }
         }
 
         // ─ Uložení do objektu ──────────────────────────────────────────────
